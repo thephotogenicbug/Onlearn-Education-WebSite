@@ -44,6 +44,46 @@ export const userLogin = createAsyncThunk(
   }
 );
 
+export const userLogout = createAsyncThunk(
+  `user/userLogout`,
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        `${API}/user/user-logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
+export const getUser = createAsyncThunk(
+  `user/getUser`,
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API}/user/get-user`, {
+        withCredentials: true,
+      });
+      if (!res.data.success) {
+        throw new Error(res.data.message);
+      }
+      console.log("redux user", res.data);
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || error.message);
+    }
+  }
+);
+
 const user_authSlice = createSlice({
   name: "user_auth",
   initialState: {
@@ -64,7 +104,7 @@ const user_authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Cookies.set("token", action.payload.token);
+        Cookies.set("token", action.payload.token, { path: "/" });
       })
       .addCase(userRegister.rejected, (state, action) => {
         (state.loading = false),
@@ -79,9 +119,37 @@ const user_authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        Cookies.set("token", action.payload.token);
+        Cookies.set("token", action.payload.token, { path: "/" });
       })
       .addCase(userLogin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      })
+      // user logout
+      .addCase(userLogout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userLogout.fulfilled, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.token = null;
+        Cookies.remove("token", { path: "/" });
+      })
+      .addCase(userLogout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      })
+      // get user data
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || action.error.message;
       });

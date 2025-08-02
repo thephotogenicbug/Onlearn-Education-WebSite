@@ -1,6 +1,9 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutAdmin } from "../../../redux/authSlice";
+import { toast } from "react-toastify";
 
 const menuItems = [
   { icon: "fa-house", label: "Dashboard", path: "/admin/dashboard" },
@@ -19,6 +22,15 @@ const menuItems = [
 const SideBar = () => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const location = useLocation();
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutAdmin());
+    toast.success("Logged out successfully");
+    navigate("/admin/login");
+  };
 
   return (
     <div
@@ -69,7 +81,7 @@ const SideBar = () => {
               ) : (
                 <div
                   className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer transition-all"
-                  onClick={() => console.log(label + " clicked")} // optional click action
+                  onClick={handleLogout}
                 >
                   {ItemContent}
                 </div>
