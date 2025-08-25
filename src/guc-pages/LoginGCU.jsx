@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 export default function LoginGCU() {
   const [email, setEmail] = useState("");
@@ -20,18 +21,32 @@ export default function LoginGCU() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-pink-100 via-purple-100 to-blue-100 relative overflow-hidden">
+      {/* Background Blobs */}
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"></div>
+      <div className="absolute top-40 -right-20 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-pulse"></div>
+
+      <motion.form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-lg shadow-md w-96"
+        className="relative bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl w-96 border border-gray-200"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.6 }}
       >
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 mb-6">
+          Welcome Back 💌
+        </h2>
+        <p className="text-center text-gray-600 mb-6">
+          Login to{" "}
+          <span className="font-semibold text-pink-600">GCU Matrimony</span>
+        </p>
+
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Email Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
+          className="w-full p-3 mb-4 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
           required
         />
         <input
@@ -39,16 +54,27 @@ export default function LoginGCU() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-4 border rounded"
+          className="w-full p-3 mb-6 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-400"
           required
         />
+
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-pink-600 text-white py-3 rounded-xl font-semibold shadow-lg hover:bg-pink-700 transition"
         >
           Login
         </button>
-      </form>
+
+        <p className="text-sm text-center mt-4 text-gray-600">
+          Don’t have an account?{" "}
+          <a
+            href="/signup"
+            className="text-pink-600 font-semibold hover:underline"
+          >
+            Signup
+          </a>
+        </p>
+      </motion.form>
     </div>
   );
 }
