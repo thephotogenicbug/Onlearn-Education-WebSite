@@ -15,13 +15,23 @@ import ViewCoursesAdmin from "./pages/ViewCoursesAdmin";
 import UpdateCourseForm from "./pages/UpdateCourseForm";
 import UserSignup from "./pages/UserSignup";
 import UserLogin from "./pages/UserLogin";
+import HomeGCU from "./guc-pages/Home";
+import About from "./guc-pages/About";
+import SignupGCU from "./guc-pages/SignupGCU";
+import LoginGCU from "./guc-pages/LoginGCU";
+import NavbarGCU from "./guc-pages/NavbarGCU";
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
+        <NavbarGCU />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomeGCU />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/signup" element={<SignupGCU />} />
+          <Route path="/login" element={<LoginGCU />} />
+          {/* <Route path="/" element={<Home />} />
           <Route path="/admin/signup" element={<Signup />} />
           <Route path="/signup" element={<UserSignup />} />
           <Route path="/login" element={<UserLogin />} />
@@ -30,9 +40,9 @@ const App = () => {
           <Route path="/admin/add-course" element={<AddCourseForm />} />
           <Route path="/admin/edit-course/:id" element={<UpdateCourseForm />} />
           <Route path="/admin/view-courses" element={<ViewCoursesAdmin />} />
-          <Route path="/contact-us" element={<Contact />} />
+          <Route path="/contact-us" element={<Contact />} /> */}
         </Routes>
-        <ToastContainer position="top-center" autoClose={3000} />
+        {/* <ToastContainer position="top-center" autoClose={3000} /> */}
       </BrowserRouter>
     </>
   );
